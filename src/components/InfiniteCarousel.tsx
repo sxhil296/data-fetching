@@ -25,10 +25,10 @@ const InfiniteCarousel: React.FC<CarouselProps> = ({
           repeat: Infinity,
         }}
       >
-        {[...images, ...images, ...images].map((image, index) => (
+        {[...images, ...images, ...images, ...images].map((image, index) => (
           <div
             key={index}
-            className="relative w-[150px] h-[100px] overflow-hidden flex-shrink-0 rounded-lg"
+            className="relative w-[100px] h-[100px] md:w-[200px] md:h-[200px] overflow-hidden flex-shrink-0 rounded-lg"
           >
             <img
               src={image}
