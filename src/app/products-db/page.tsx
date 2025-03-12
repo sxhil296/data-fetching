@@ -11,7 +11,7 @@ export default async function ProductsDB() {
   const products: Product[] = await getProducts();
   console.log(products);
   return (
-    <div className="p-10">
+    <div className="p-2 overflow-y-auto">
       <h1>Products</h1>
       <ul className="flex flex-col gap-4 w-full">
         {products.map((product) => (
