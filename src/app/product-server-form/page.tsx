@@ -1,20 +1,23 @@
-import { addProduct } from "@/prisma-db";
-import { redirect } from "next/navigation";
-import React from "react";
+'use client'
+import { addProductAction, FormState } from "@/actions/product";
+// import SubmitBtn from "@/components/SubmitBtn";
+
+import React, { useActionState } from "react";
+
+
 
 const AddProductServerAction = () => {
-  async function addProductAction(formdata: FormData) {
-    "use server";
-    const title = formdata.get("title") as string;
-    const description = formdata.get("description") as string;
-    const price = formdata.get("price") as string;
-    await addProduct(title, parseInt(price), description);
-    redirect("/products-db");
+
+  const initialState: FormState = {
+    errors: {}
   }
+
+  const [state, formAction, isPending]=useActionState(addProductAction, initialState);
+ 
 
   return (
     <form
-      action={addProductAction}
+      action={formAction}
       className="flex flex-col gap-4 max-w-2xl mx-auto p-6"
     >
       <div className="flex flex-col gap-2">
@@ -25,6 +28,9 @@ const AddProductServerAction = () => {
           name="title"
           className="border px-4 py-2 rounded outline-none"
         />
+        {state.errors.title && (
+          <p className="text-red-500">{state.errors.title}</p>
+        )}
       </div>
 
       <div className="flex flex-col gap-2">
@@ -35,6 +41,9 @@ const AddProductServerAction = () => {
           name="description"
           className="border px-4 py-2 rounded outline-none"
         />
+         {state.errors.description && (
+          <p className="text-red-500">{state.errors.description}</p>
+        )}
       </div>
 
       <div className="flex flex-col gap-2">
@@ -45,12 +54,17 @@ const AddProductServerAction = () => {
           name="price"
           className="border px-4 py-2 rounded outline-none"
         />
+         {state.errors.price && (
+          <p className="text-red-500">{state.errors.price}</p>
+        )}
       </div>
+     {/* <SubmitBtn /> */}
       <button
         type="submit"
         className="bg-blue-500 hover:bg-blue-400 px-4 py-2 rounded cursor-pointer text-white"
+        disabled={isPending}
       >
-        Add Product
+        {isPending ? "Loading..." : "Submit"}
       </button>
     </form>
   );
